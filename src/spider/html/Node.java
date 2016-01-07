@@ -13,7 +13,7 @@ public  class Node {
 	public String rawText;
 
 
-	public  static  Pattern pattern  = Pattern.compile("<.*?>[^<]*(</[^<>]*>)?");
+	private  Pattern pattern  = Pattern.compile("<.*?>[^<]*(</[^<>]*>)?");
 	
 	public Node(){
 		
@@ -35,13 +35,19 @@ public  class Node {
 	public Node create(String rawText){
 		return new Node(rawText);
 	}
-	
+	public  Pattern getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(Pattern pattern) {
+		this.pattern = pattern;
+	}
 	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		String s = 
-				"Node" +"{rawtext:"+ rawText+"}";
+				"Node:\n" +"{rawtext:"+ rawText+"}";
 		return s;
 	}
 	@Override
@@ -53,14 +59,7 @@ public  class Node {
 		return true;
 	}
 
-	public LinkNode createBySelf() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public LinkNode createNodeBySelf() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
+
 }

@@ -9,15 +9,20 @@ public class LinkNode extends Node{
 
 	private String linkText;
 	
-	public static Pattern pattern = 
-				Pattern.compile("<a[^<>]*?href=[\"']([^'\"]*?)[\"']>.*?([^<>]*)</a>", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
+	private Pattern pattern = 
+				Pattern.compile("<a[^<>]*?href=\"([^\"]*?/question/\\d+)\".*?>(.*?)</a>", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
 
+	public LinkNode(){
+		
+	}
 	public  LinkNode(String rawText) {
 		super(rawText);
-		Matcher m = pattern.matcher(rawText);
-		while(m.find()){
-			this.link = m.group(1);
-			this.linkText = m.group(2);
+		if(rawText != null){
+			Matcher m = pattern.matcher(rawText);
+			while(m.find()){
+				this.link = m.group(1);
+				this.linkText = m.group(2);
+			}
 		}		
 	}
 	
@@ -26,6 +31,12 @@ public class LinkNode extends Node{
 		return new LinkNode(rawText);
 	}
 	
+	public Pattern getPattern() {
+		return pattern;
+	}
+	public void setPattern(Pattern pattern) {
+		this.pattern = pattern;
+	}
 		
 	public String getLink() {
 		return link;
@@ -38,14 +49,10 @@ public class LinkNode extends Node{
 	public String toString() {
 		// TODO Auto-generated method stub
 		String s = 
-				"LinkNode" +"{link:"+ link+",\n"
+				"LinkNode:\n" +"{link:"+ link+",\n"
 						+ "linkText:"+linkText+",\n"+"rawText:"+rawText+"}";
 		return s;
 	}
-	
 
-	
-	
-	
 
 }

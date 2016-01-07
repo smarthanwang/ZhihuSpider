@@ -10,9 +10,13 @@ public class ImageNode extends Node {
 	private String imageName;
 
 
-	public static Pattern pattern = 
-			Pattern.compile("<img[^<>]+src=\"([^\"]*)\"[^>]*data-original=\"([^\"]*)\"[^>]*>");
+	private Pattern pattern = 
+			Pattern.compile("<img[^<>]+src=\"(.*?)\".*?data-original=\"(.*?)\".*?>", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
 	
+	
+	public ImageNode(){
+		
+	}
 	public String getImageName() {
 		return imageName;
 	}
@@ -41,7 +45,7 @@ public class ImageNode extends Node {
 	public String toString() {
 		// TODO Auto-generated method stub
 		String s = 
-				"ImageNode" +"{link:"+ link+",\n"
+				"ImageNode:\n" +"{link:"+ link+",\n"
 						+ "originalLink:"+originalLink+",\n"+"rawText:"+rawText+"}";
 		return s;
 	}
@@ -52,6 +56,12 @@ public class ImageNode extends Node {
 		ImageNode node = (ImageNode) o;
 		if(originalLink != null? !originalLink.equals(node.originalLink):node.originalLink != null) return false;
 		return true;
+	}
+	public Pattern getPattern() {
+		return pattern;
+	}
+	public void setPattern(Pattern pattern) {
+		this.pattern = pattern;
 	}
 	
 		

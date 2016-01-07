@@ -5,8 +5,11 @@ import java.util.regex.Pattern;
 
 public class UrlUtils {
 
+	private static String host = "http://www.zhihu.com";
+	private static Pattern protocolPattern = Pattern.compile("\\w+://");
+	private static Pattern hostPattern = Pattern.compile("\\w+://[^/]+");
 	
-	public static Pattern protocolPattern = Pattern.compile("\\w+://");
+	
 	public static String removeProtocol(String url){		
 		return  protocolPattern.matcher(url).replaceAll("");				
 	}
@@ -26,8 +29,10 @@ public class UrlUtils {
 		return url;
 	}
 	
+	public static String getFileNameByURL(String url){
+		return url.substring(url.lastIndexOf('/')+1);
+	}
 	
-	private static Pattern hostPattern = Pattern.compile("\\w+://[^/]+");
 	/**
 	 * @param url
 	 * @return the host which this url is belong to;
@@ -42,15 +47,25 @@ public class UrlUtils {
 		return url;
 	}
 	
-	public String canonicalizeUrl(String link, String host){
-		if(link.startsWith("/") || link.startsWith("?")){
+	public static String canonicalizeUrl(String link){
+		if((link.startsWith("/") || link.startsWith("?"))){
 			link = host + link;
 		}
-		if(link.startsWith("javascript:") || link.equals("#")){
-			link = "";
+		return link;
+	}
+	public static String canonicalizeUrl(String link, String host){
+		if((link.startsWith("/") || link.startsWith("?"))){
+			link = host + link;
 		}
 		return link;
 	}
 	
+	public static boolean isValid(String link){
+		if(link.startsWith("javascript:") || link.equals("#") || link.equals("mailto:")){
+			return false;
+		}
+		
+		return true;
+	}
 	
 }

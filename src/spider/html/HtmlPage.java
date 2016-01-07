@@ -4,45 +4,24 @@ import java.net.URL;
 
 public class HtmlPage {
 
-	private URL url;
+	private String url;
 	private String htmlText;
-	private String charset;
 	
-
-
-	public HtmlPage(URL url, String charset){
+	public HtmlPage(URL url, String htmlText){
+		this.url =url.toString();
+		this.htmlText = htmlText;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
 		this.url = url;
-		this.charset =charset;
 	}
-	public void setUrl(URL url) {
-		this.url = url;
+	public String getHtmlText() {
+		return htmlText;
 	}
-
-	public void setCharset(String charset) {
-		this.charset = charset;
+	public void setHtmlText(String htmlText) {
+		this.htmlText = htmlText;
 	}
 	
-	public URL getUrl(){
-		return this.url;
-	}
-	
-	public String getCharset() {
-		return this.charset;
-	}
-	
-	/**
-	 * 获取当前网页的源文件
-	 * @return html 网页源文件
-	 */
-	public String getHtmlText(){
-
-		return this.htmlText;
-	}
-	
-	public void setHtmlText(String htmltext) {
-		this.htmlText = htmltext;
-	}
-	
-
-
 }
