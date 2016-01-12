@@ -26,7 +26,7 @@ public class AnswerNode extends Node {
 
 		answer = answer.replaceAll("<br>", "\n");
 		answer = answer.replaceAll("</?[bu]>", "");
-		answer = answer.replaceAll("</?p>", "\n");
+		answer = answer.replaceAll("</?p>", "\n\t");
 		return answer;
 	}
 	public AnswerNode(){

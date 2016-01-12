@@ -6,7 +6,7 @@ public class ZhihuSpider {
 		Spider zhihuSpider = new Spider();
 		zhihuSpider.setHost("http://www.zhihu.com")
 				   .thread(5)
-				   .addStartRequests("https://www.zhihu.com/topic/20022251")
+				   .addStartRequests("https://www.zhihu.com/topic/20022251","https://www.zhihu.com/topic/19552207/top-answers")
 				   .start();;		
 	}
 }

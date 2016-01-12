@@ -8,14 +8,14 @@ public class Scheduler {
 	private DuplicateRemover duplicateRemover = new DuplicateRemover();
 		
 	/**
-	 * 获取并移除队首元素
-	 * @return 队首元素
+	 * 获取并移除队首request
+	 * @return 队首request
 	 */
 	public  synchronized Request poll(){
 		return requestsQueue.poll();
 	}	
 	/**
-	 * 元素入队
+	 * request入队
 	 * @param request
 	 */
 	public synchronized boolean push(Request request){
@@ -28,11 +28,18 @@ public class Scheduler {
 	public synchronized boolean isEmpty(){
 		return requestsQueue.isEmpty();
 	}
-	
-	public synchronized long size() {
+	/**
+	 * @return 剩余的请求数
+	 */
+	public synchronized long toDoSize() {
 		return requestsQueue.size();
 	}
-	
+	/**
+	 * @return 总的请求数
+	 */
+	public synchronized long totalCount(){
+		return duplicateRemover.getTotalRequestsCount();
+	}
 
 	
 }

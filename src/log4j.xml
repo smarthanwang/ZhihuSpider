@@ -2,7 +2,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-    <appender name="stdout" class="org.apache.log4j.FileAppender">
+    <appender name="fileOutput" class="org.apache.log4j.FileAppender">
         <param name="File" value="log/output.log" /><!-- 设置日志输出文件名 -->
        	 <!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
        	<param name="Append" value="false" />
@@ -10,20 +10,20 @@
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c(%F:%L) ## %m%n" />
         </layout>
     </appender>
-    <!-- <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yy-MM-dd HH:mm:ss,SSS} %-5p %c(%F:%L) ## %m%n" />
         </layout>
-    </appender> -->
+    </appender>
 
     <logger name="org.apache" additivity="false">
         <level value="warn" />
-        <appender-ref ref="stdout" />
+        <appender-ref ref="fileOutput" />
     </logger>
 
     <root>
         <level value="info" />
-        <appender-ref ref="stdout" />
+        <appender-ref ref="fileOutput" />
     </root>
 
 </log4j:configuration>

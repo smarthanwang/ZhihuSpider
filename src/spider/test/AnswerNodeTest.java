@@ -16,8 +16,8 @@ public class AnswerNodeTest {
 		Request request = new Request("https://www.zhihu.com/question/38360797")
 				.setType(RequestType.Link);
 	HtmlPage hp = new Downloader().download(request);
-	Parser parser = new Parser(hp);
-	List<Node> list = parser.extractAllNodeThatMatch(new AnswerNode());
+	Parser parser = new Parser();
+	List<Node> list = parser.extractAllNodeThatMatch(hp,new AnswerNode());
 	System.out.println(list.size());
 	for(Node node : list){
 		//System.out.println(node.getPattern().toString());
