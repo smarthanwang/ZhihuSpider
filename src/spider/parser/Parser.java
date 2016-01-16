@@ -70,13 +70,13 @@ public class Parser {
 		
 	}
 	
-	public String extractQuestion(HtmlPage htmlPage){
+	public QuestionNode extractQuestion(HtmlPage htmlPage){
 		QuestionNode questionNode = new QuestionNode();
 		Matcher matcher = questionNode.getPattern().matcher(htmlPage.getHtmlText());
 		while(matcher.find()){
 			questionNode = questionNode.create(matcher.group());
 		}
-		return questionNode.toString();
+		return questionNode;
 	}
 	
 	public List<String> extractAnswers(HtmlPage htmlPage){

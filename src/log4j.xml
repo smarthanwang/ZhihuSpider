@@ -18,12 +18,12 @@
 
     <logger name="org.apache" additivity="false">
         <level value="warn" />
-        <appender-ref ref="fileOutput" />
+        <appender-ref ref="stdout" />
     </logger>
 
     <root>
         <level value="info" />
-        <appender-ref ref="fileOutput" />
+        <appender-ref ref="stdout" />
     </root>
 
 </log4j:configuration>

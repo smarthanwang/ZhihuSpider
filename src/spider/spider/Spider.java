@@ -14,6 +14,8 @@ import spider.downloader.Downloader;
 import spider.html.HtmlPage;
 
 import spider.parser.Parser;
+import spider.pipeline.ConsolePipeline;
+import spider.pipeline.Pipeline;
 import spider.scheduler.Request;
 import spider.scheduler.Scheduler;
 
@@ -30,6 +32,7 @@ public class Spider implements Runnable{
 	private Downloader downloader;
 	private Parser parser;
 	private Scheduler scheduler;
+	private Pipeline pipeline;
 	private List<Request> startRequests = new ArrayList<Request>();
 	private boolean completed = false ; 
 	private AtomicInteger threadAlive = new AtomicInteger(0);
@@ -38,6 +41,7 @@ public class Spider implements Runnable{
 		this.downloader = new Downloader();
 		this.parser = new Parser();
 		this.scheduler =new Scheduler();
+		if(pipeline == null) pipeline = new ConsolePipeline();
 		if(host == null) host = "http://www.zhihu.com";
 		if(executorService == null) executorService = Executors.newFixedThreadPool(threadNum);
 		if(startRequests.size() > 0){
@@ -105,14 +109,9 @@ public class Spider implements Runnable{
 		for(Request r : requests){
 			scheduler.push(r);
 		}
-		//输出问题描述
-		System.out.println(parser.extractQuestion(hp));
-		//输出问题答案
-		/*for(String answer : parser.extractAnswers(hp)){
-			System.out.println(answer);
-		}*/
-		long todo = scheduler.toDoSize(), total = scheduler.totalCount();
-		System.out.println("Remains:" +todo + "\tTotal:" + total+ "\tProcessed:" +( total - todo));
+		pipeline.Process(parser.extractAnswers(hp), parser.extractQuestion(hp));
+		//long todo = scheduler.toDoSize(), total = scheduler.totalCount();
+		//logger.info("Remains:" +todo + "\tTotal:" + total+ "\tProcessed:" +( total - todo));
 													
 	}
 	public void  waitNewUrl(){
@@ -140,6 +139,11 @@ public class Spider implements Runnable{
 
 	public Spider setHost(String host) {
 		this.host = host;
+		return this;
+	}
+
+	public Spider setPipeline(Pipeline pipeline) {
+		this.pipeline = pipeline;
 		return this;
 	}
 

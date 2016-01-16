@@ -18,7 +18,7 @@ public class QuestionNode extends Node{
 		super(rawText);
 		Matcher matcher = pattern.matcher(rawText);
 		while(matcher.find()){
-			this.question = executeQuestionText(matcher.group(1)).replaceAll("\n\n", "\n");
+			this.question = executeQuestionText(matcher.group(1)).trim();
 			this.content  = executeQuestionText(matcher.group(2));
 		}
 	}
