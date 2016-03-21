@@ -27,6 +27,7 @@ public class AnswerNode extends Node {
 		answer = answer.replaceAll("<br>", "\n");
 		answer = answer.replaceAll("</?[bu]>", "");
 		answer = answer.replaceAll("</?p>", "\n\t");
+		answer = answer.replaceAll("<.*>", "");
 		return answer;
 	}
 	public AnswerNode(){
@@ -51,7 +52,7 @@ public class AnswerNode extends Node {
 
 	public String toString() {
 
-		return "author:" + this.author+"\nauthor-link:"+ this.authorLink +"\nvoters:" + this.votersCount + "\ncontent£º" + this.content;
+		return "author:" + this.author+ "\nauthor-link:"+ this.authorLink +"\nvoters:" + this.votersCount + "\ncontent£º" + this.content;
 	}
 
 	public String getAuthor() {

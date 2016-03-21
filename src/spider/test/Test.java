@@ -1,15 +1,22 @@
 package spider.test;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.HashSet;
+
+import spider.scheduler.Request;
+import spider.util.FileUtils;
 
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-
-		//URL url = new URL("http://www.zhihu.com/");
-		Logger logger =LoggerFactory.getLogger("Test");
-		logger.info("fuck");
+		
+		Request request = new Request("www.google.com");
+		HashSet<Request> rs = new HashSet<>();
+		rs.add(request);
+		
+		System.out.println(rs.contains(new Request("www.google.com")));
+		
+		System.err.println(FileUtils.ANSWERPATH);
+		System.err.println(FileUtils.IMAGEPATH);
 	}
 
 }

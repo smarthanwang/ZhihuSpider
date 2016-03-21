@@ -37,11 +37,19 @@ public class Request {
 	
 	public boolean equals(Object o){
 		if(this == o ) return true;
+		
 		if(o != null && getClass() != o.getClass()) return false;
+		
 		Request oTask = (Request) o;
 		if(url != null ? !url.equals(oTask.getUrl()): oTask.getUrl() != null) return false;
 		//if(type != null ? !type.equals(oTask.getType()) : oTask.getType() != null) return false;
 		return true;
+	}
+	
+	public int hashCode(){
+		int result = 17;		
+		
+		return (result = result * 31 + url.hashCode());
 	}
 	
 	public String toString(){

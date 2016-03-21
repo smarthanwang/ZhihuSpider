@@ -1,6 +1,7 @@
 package spider.downloader;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +15,23 @@ import org.slf4j.LoggerFactory;
 import spider.html.HtmlPage;
 import spider.scheduler.Request;
 import spider.scheduler.RequestType;
+import spider.util.FileUtils;
 import spider.util.UrlUtils;
 public class Downloader {
 
-	private String filePath =".\\Image\\";
+	private static  final String FILEPATH = FileUtils.IMAGEPATH;
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	private static Downloader downloader = new Downloader();
+	
+	static{
+		File file =new File(FILEPATH);
+		if(!file.exists()) file.mkdirs();
+	}
+	
+	private Downloader(){
+		
+	}
 	
 	public HtmlPage download(Request request){
 		try {
@@ -55,7 +68,7 @@ public class Downloader {
 			return new HtmlPage(url, sb.toString());
 		}catch(Exception e){
 			logger.info("downloading page error: "+url);
-			e.printStackTrace();
+			 System.out.println(e);
 			return null;
 		}
 	}
@@ -64,10 +77,10 @@ public class Downloader {
 		
 		 try{
 			 InputStream in = configureURLConnection(url).getInputStream();
-			 logger.info("downloading file: "+url);
-			 byte[] buffer = new byte[1024];
+			 logger.info("downloading image: "+url);
+			 byte[] buffer = new byte[1024*4];
 			 int len;
-			 FileOutputStream fout = new FileOutputStream(filePath +fileName);
+			 FileOutputStream fout = new FileOutputStream(FILEPATH +fileName);
 			 while((len = in.read(buffer)) > 0){
 				 fout.write(buffer, 0, len);
 				 fout.flush();
@@ -76,7 +89,7 @@ public class Downloader {
 			 fout.close();		
 		 }catch(Exception e){
 			 logger.info("downloading file error: "+url);
-			 e.printStackTrace();
+			 System.out.println(e);
 		 }
 	}
 
@@ -86,11 +99,21 @@ public class Downloader {
 			uc = url.openConnection();
 			uc.setConnectTimeout(3000);
 			uc.setReadTimeout(3000);
+			uc.setRequestProperty("user-agent",
+					"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
 		return uc;
 	}
-
+	
+	/**
+	 * 使用单例模式，创建Downloader实例
+	 * @return downloder
+	 */
+	public static Downloader getInstance(){
+		return downloader;
+	}
+	
 }

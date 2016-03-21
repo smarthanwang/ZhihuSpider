@@ -38,7 +38,7 @@ public class Spider implements Runnable{
 	private AtomicInteger threadAlive = new AtomicInteger(0);
 
 	private void init(){
-		this.downloader = new Downloader();
+		this.downloader = Downloader.getInstance();
 		this.parser = new Parser();
 		this.scheduler =new Scheduler();
 		if(pipeline == null) pipeline = new ConsolePipeline();

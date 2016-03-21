@@ -11,7 +11,7 @@ public class DownlaoderTest {
 	public void download() throws Exception{
 		request= new Request("https://pic3.zhimg.com/3c750eaa32a4f9b525437e6b319ad07a_b.jpeg")
 				.setType(RequestType.Image);
-		new Downloader().download(request);
+		Downloader.getInstance().download(request);
 	}
 	
 	public static void main(String args[]) throws Exception{

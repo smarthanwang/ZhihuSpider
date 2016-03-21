@@ -19,7 +19,7 @@ public class LinkNodeTest {
 		// TODO Auto-generated method stub
 		Request request = new Request("https://www.zhihu.com/question/38360797")
 					.setType(RequestType.Link);
-		HtmlPage hp = new Downloader().download(request);
+		HtmlPage hp = Downloader.getInstance().download(request);
 		Parser parser = new Parser();
 		List<Node> list = parser.extractAllNodeThatMatch(hp, new LinkNode());
 		System.out.println(list.size());
