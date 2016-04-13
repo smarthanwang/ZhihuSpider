@@ -11,12 +11,13 @@ public class LinkNode extends Node{
 	
 	private Pattern pattern = 
 				Pattern.compile("<a[^<>]*?href=\"([^\"]*?/question/\\d+)\".*?>(.*?)</a>", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
-
+	
 	public LinkNode(){
 		
 	}
+	
 	public  LinkNode(String rawText) {
-		super(rawText);
+		setRawText(rawText);
 		if(rawText != null){
 			Matcher m = pattern.matcher(rawText);
 			while(m.find()){
@@ -26,8 +27,7 @@ public class LinkNode extends Node{
 		}		
 	}
 	
-	public LinkNode create(String rawText){
-		
+	public LinkNode create(String rawText){		
 		return new LinkNode(rawText);
 	}
 	

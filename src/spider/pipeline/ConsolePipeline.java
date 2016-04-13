@@ -8,7 +8,7 @@ import spider.html.QuestionNode;
 public class ConsolePipeline implements Pipeline {
 
 	
-	public void Process(List<String> list, QuestionNode question) {
+	public void process(List<String> list, QuestionNode question) {
 		
 		System.out.println(question);
 		// TODO Auto-generated method stub

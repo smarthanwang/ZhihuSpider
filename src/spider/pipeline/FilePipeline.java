@@ -18,7 +18,7 @@ public class FilePipeline implements Pipeline {
 		
 	}
 	@Override
-	public void Process(List<String	> list, QuestionNode question) {
+	public void process(List<String	> list, QuestionNode question) {
 		String filename =  question.getQuestion() ;
 		if(filename == null ) return ;
 		try {			

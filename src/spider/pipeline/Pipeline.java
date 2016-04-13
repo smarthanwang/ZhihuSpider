@@ -7,5 +7,5 @@ import spider.html.QuestionNode;
 
 public interface Pipeline {
 
-	public void Process(List<String> list, QuestionNode question);
+	public void process(List<String> list, QuestionNode question);
 }

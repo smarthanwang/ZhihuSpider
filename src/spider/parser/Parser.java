@@ -1,14 +1,18 @@
 package spider.parser;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
 
 import spider.html.AnswerNode;
 import spider.html.HtmlPage;
 import spider.html.ImageNode;
 import spider.html.LinkNode;
-import spider.html.Node;
 import spider.html.QuestionNode;
 import spider.scheduler.Request;
 import spider.scheduler.RequestType;
@@ -20,32 +24,51 @@ import spider.util.UrlUtils;
  */
 
 public class Parser {
+	
+	private Logger logger = Logger.getLogger(getClass());
 
-
-	public Parser(){
+	private  Parser(){
 		
 	}
+	
+	public static Parser getInstance() {
+		return new Parser();
+	}
 
+	public  <T> List<T> extractAllNodeThatMatch(HtmlPage htmlPage ,Class<T> c) {
+		ArrayList<T> nodes = new ArrayList<T>();
+		try {
 
-	public List<Node> extractAllNodeThatMatch(HtmlPage htmlPage ,Node...  node) {
+			Object node = c.newInstance();
+			Field patternF = c.getDeclaredField("pattern");
+			patternF.setAccessible(true);
+			Pattern pattern = (Pattern) patternF.get(node);
 
-		ArrayList<Node> tags = new ArrayList<Node>();
-		for(int i = 0; i < node.length; i ++){
-			Matcher matcher = node[i].getPattern().matcher(htmlPage.getHtmlText());
+			Method method = c.getDeclaredMethod("create", String.class);			
+			Matcher matcher = pattern.matcher(htmlPage.getHtmlText());
 			while (matcher.find()) {
-				Node n = node[i].create(matcher.group());
-				tags.add(n);
-			}
-		}
+				try{
+					@SuppressWarnings("unchecked")
+					T n = (T) method.invoke(node, matcher.group());
+					nodes.add(n);
+				}catch (Exception e) {
+					logger.error("Parser work error :"+e.getMessage());
 
-		return tags;
+				}
+			}			
+			return nodes;			
+		} catch (Exception e) {
+			logger.error("Parser work error :" +e.getMessage());
+			return nodes;
+		}
+		
+
 	}
 	
 	public List<Request> extractPageRequests(HtmlPage htmlPage ){
 		List<Request> pageRequests = new ArrayList<>();
-		for(Node node : extractAllNodeThatMatch(htmlPage ,new LinkNode())){
-			LinkNode linkNode = (LinkNode) node;
-			Request r = new Request(UrlUtils.canonicalizeUrl(linkNode.getLink()));
+		for(LinkNode node : extractAllNodeThatMatch(htmlPage ,LinkNode.class)){
+			Request r = new Request(UrlUtils.canonicalizeUrl(node.getLink()));
 			pageRequests.add(r);
 		}
 		return pageRequests;
@@ -53,13 +76,23 @@ public class Parser {
 	
 	public List<Request> extractImageRequests(HtmlPage htmlPage ){
 		List<Request> imageRequests = new ArrayList<>();
-		for(Node node : extractAllNodeThatMatch(htmlPage ,new ImageNode())){
-			ImageNode imageNode = (ImageNode) node;
-			Request r = new Request(imageNode.getOriginalLink())
-					.setType(RequestType.Image);
+		for(ImageNode node : extractAllNodeThatMatch(htmlPage ,ImageNode.class)){
+			Request r = new Request(node.getOriginalLink()).setType(RequestType.Image);
 			imageRequests.add(r);
 		}
 		return imageRequests;
+	}
+	
+	public void process(HtmlPage htmlPage){
+		
+		htmlPage.addAllRequests(extractAllRequests(htmlPage));
+		htmlPage.setQuestion(extractQuestion(htmlPage));
+		if(htmlPage.getQuestion() == null ){
+			htmlPage.setSkip(true);//Ìø¹ý
+			return;
+		}
+		htmlPage.addAllAnswers(extractAnswers(htmlPage));
+ 		
 	}
 	
 	public List<Request> extractAllRequests(HtmlPage htmlPage){
@@ -71,20 +104,16 @@ public class Parser {
 	}
 	
 	public QuestionNode extractQuestion(HtmlPage htmlPage){
-		QuestionNode questionNode = new QuestionNode();
-		Matcher matcher = questionNode.getPattern().matcher(htmlPage.getHtmlText());
-		while(matcher.find()){
-			questionNode = questionNode.create(matcher.group());
-		}
-		return questionNode;
+		List<QuestionNode> list;
+		return ( list =extractAllNodeThatMatch(htmlPage, QuestionNode.class)).size() > 0 ? list.get(0) : null;
 	}
+	
 	
 	public List<String> extractAnswers(HtmlPage htmlPage){
 		List<String> answers = new ArrayList<String>();
-		List<Node> nodes =  extractAllNodeThatMatch(htmlPage, new AnswerNode());
-		for(Node node : nodes){
-			AnswerNode an = (AnswerNode) node;
-			answers.add(an.toString());
+		List<AnswerNode> nodes =  extractAllNodeThatMatch(htmlPage, AnswerNode.class);
+		for(AnswerNode node : nodes){
+			answers.add(node.toString());
 		}
 		return answers;
 	}

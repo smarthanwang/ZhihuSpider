@@ -9,13 +9,12 @@ public class QuestionNode extends Node{
 	private Pattern pattern = Pattern.compile("<h2 class=\"zm-item-title zm-editable-content\">([^<>]*)</h2>.*?<div class=\"zm-editable-content\">(.*?)</div>", 
 							Pattern.DOTALL);
 	
-	
 	public QuestionNode(){
 		
 	}
-	
 	public QuestionNode(String rawText){
-		super(rawText);
+		setRawText(rawText);
+
 		Matcher matcher = pattern.matcher(rawText);
 		while(matcher.find()){
 			this.question = executeQuestionText(matcher.group(1)).trim();

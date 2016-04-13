@@ -35,7 +35,8 @@ public class AnswerNode extends Node {
 	}
 	
 	public AnswerNode(String rawText) {
-		super(rawText);
+		setRawText(rawText);
+		
 		Matcher m = pattern.matcher(rawText);
 		while (m.find()) {
 			this.authorLink = m.group(2);

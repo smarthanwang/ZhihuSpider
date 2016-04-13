@@ -10,7 +10,7 @@ public class QuestionNodeTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		HtmlPage hp = Downloader.getInstance().download(new Request("https://www.zhihu.com/question/38360797"));
-		Parser parser = new Parser();
+		Parser parser = Parser.getInstance();
 		System.out.println(parser.extractQuestion(hp));
 	}
 

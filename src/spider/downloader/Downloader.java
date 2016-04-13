@@ -51,7 +51,7 @@ public class Downloader {
 
 	}
 	
-	private HtmlPage downloadHtmlPage(URL url, String charSet){
+	public HtmlPage downloadHtmlPage(URL url, String charSet){
 		try{
 			InputStream in = configureURLConnection(url).getInputStream();
 			logger.info("downloading page: "+url);
@@ -65,7 +65,7 @@ public class Downloader {
 			}
 			in.close();
 			reader.close();
-			return new HtmlPage(url, sb.toString());
+			return new HtmlPage(sb.toString());
 		}catch(Exception e){
 			logger.info("downloading page error: "+url);
 			 System.out.println(e);
@@ -73,7 +73,7 @@ public class Downloader {
 		}
 	}
 	
-	private void downloadFile(URL url, String fileName){
+	public  void downloadFile(URL url, String fileName){
 		
 		 try{
 			 InputStream in = configureURLConnection(url).getInputStream();

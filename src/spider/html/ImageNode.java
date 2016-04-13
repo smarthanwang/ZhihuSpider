@@ -14,9 +14,6 @@ public class ImageNode extends Node {
 			Pattern.compile("<img[^<>]+src=\"(.*?)\".*?data-original=\"(.*?)\".*?>", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
 	
 	
-	public ImageNode(){
-		
-	}
 	public String getImageName() {
 		return imageName;
 	}
@@ -27,8 +24,12 @@ public class ImageNode extends Node {
 		return this.originalLink;
 	}
 	
+	public ImageNode(){
+		
+	}
+	
 	public  ImageNode (String rawText) {
-		super(rawText);
+		setRawText(rawText);
 		Matcher m = pattern.matcher(rawText);
 		while(m.find()){
 			this.link = m.group(1);

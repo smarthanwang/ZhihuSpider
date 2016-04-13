@@ -1,1 +1,4 @@
 /bin/
+/answers
+/images
+.gitignore

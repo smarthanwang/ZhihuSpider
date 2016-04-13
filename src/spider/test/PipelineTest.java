@@ -13,7 +13,7 @@ public class PipelineTest {
 		//Pipeline pipeline = new ConsolePipeline();
 		Pipeline pipeline = new FilePipeline();
 		HtmlPage hp = Downloader.getInstance().download(new Request("https://www.zhihu.com/question/38360797"));
-		Parser parser = new Parser();
-		pipeline.Process(parser.extractAnswers(hp), parser.extractQuestion(hp));
+		Parser parser = Parser.getInstance();
+		pipeline.process(parser.extractAnswers(hp), parser.extractQuestion(hp));
 	}
 }
